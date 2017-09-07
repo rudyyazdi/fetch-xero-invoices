@@ -13,6 +13,15 @@ TIME = Time.now
 START = "2007-01-01T00:00:00"
 FINISH = "2008-07-09T00:00:00"
 
+# create params for the query.
+arg = {}.tap do |a|
+  where = ""
+  where += "Date>=DateTime.Parse(\"#{START}\")" if START
+  where += "&&" unless where.empty?
+  where += "Date<=DateTime.Parse(\"#{FINISH}\")" if FINISH
+  a[:where] = where unless where.empty?
+end
+
 # the columns we want to see in the csv file.
 ATTRIBUTES = [
   :contact_name,
@@ -35,15 +44,6 @@ ATTRIBUTES = [
   :currency_rate,
   :has_attachments
 ]
-
-# create params for the query.
-arg = {}.tap do |a|
-  where = ""
-  where += "Date>=DateTime.Parse(\"#{START}\")" if START
-  where += "&&" unless where.empty?
-  where += "Date<=DateTime.Parse(\"#{FINISH}\")" if FINISH
-  a[:where] = where unless where.empty?
-end
 
 # Create client (used to communicate with the API).
 client = Xeroizer::PrivateApplication.new(CONSUMER_KEY, CONSUMER_SECRET, 'rsa')
