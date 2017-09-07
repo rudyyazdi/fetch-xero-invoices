@@ -1,3 +1,5 @@
 node_modules/
 rsa
 CONSUMER_KEY
+results/*.csv
+.DS_Store
